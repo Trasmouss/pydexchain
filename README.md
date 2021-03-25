@@ -1,7 +1,9 @@
 # pydexchain
 python class for mydexchain
 
-## from pydexchain.pydexchain import myDexchain
+### use :
+from pydexchain.pydexchain import myDexchain
+
 ### host :
 dexchain nope ip.
 ### port :
