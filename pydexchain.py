@@ -19,7 +19,7 @@ class myDexchain:
             url = "http://{}:{}/balanceWallet/{}".format(self.host, self.port, wallet)
             req = requests.post(url = url, data = '')
             data = req.json()
-            if(data['message'] == 'Success'):
+            if(data['result'] == '0000'):
                 return data['value']
             else:
                 return 0
@@ -36,7 +36,7 @@ class myDexchain:
             url = "http://{}:{}/balanceToken/{}&{}".format(self.host,self.port,wallet,contract)
             req = requests.post(url = url, data = '')
             data = req.json()
-            if(data['message'] == 'Success'):
+            if(data['result'] == '0000'):
                 return data['value']
             else:
                 return 0
