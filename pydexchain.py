@@ -11,7 +11,7 @@ class myDexchain:
         self.port = port
         self.mother = mother
         self.password = password
-        self.description = 'Webitox'
+        self.description = 'Description'
         print(".: Create Dexchain is DONE :.")
     
     def getBalance(self, wallet):
@@ -120,3 +120,6 @@ class myDexchain:
             order = order - 100000000000
             fee = (order * 0.000000000003) + 24.60
         return fee
+
+    def setDescription(self, strDesc):
+        self.description = strDesc
