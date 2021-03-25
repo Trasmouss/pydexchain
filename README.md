@@ -1,18 +1,18 @@
 # pydexchain
 python class for mydexchain
 
-# getBalance()
+## getBalance()
 
-# getTokenBalance()
+## getTokenBalance()
 
-# send()
+## send()
 
-# sendMother()
+## sendMother()
 
-# sendForInsufficient()
+## sendForInsufficient()
 
-# dexLog()
+## dexLog()
 
-# fee()
+## fee()
 
-# setDescription()
+## setDescription()
