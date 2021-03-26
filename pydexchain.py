@@ -4,6 +4,7 @@ from datetime import datetime
 import requests
 import json
 import math
+from requests import models
 
 class myDexchain:
     def __init__(self, host, port, mother, password):
@@ -48,9 +49,9 @@ class myDexchain:
             self.dexLog('{}'.format(e))
             return 0
 
-    def send(self, sender, password, receiver, amount, contract, description):
+    def send(self, sender, password, receiver, amount, contract):
         try:
-            url = "http://{}:{}/sendTransaction/{}&{}&{}&{}&IN&{}&Webitox".format(self.host, self.port, sender, password, receiver, amount, contract, description)
+            url = "http://{}:{}/sendTransaction/{}&{}&{}&{}&OUT&{}&Webitox".format(self.host, self.port, sender, password, receiver, amount, contract, self.description)
             req = requests.post(url = url, data = '')
             data = req.json()
             print(data)
@@ -58,11 +59,9 @@ class myDexchain:
             if(data['result'] == '0000'):
                 return 1
             elif(data['result'] == '0010'):
-                print(data)
                 self.dexLog('{}'.format(data))
-                return 0
+                return 2
             else:
-                print(data)
                 self.dexLog('{}'.format(data))
                 return 0
         except requests.ConnectionError:
@@ -76,11 +75,11 @@ class myDexchain:
     def sendMother(self, sender, contract, password, amount):
         if(contract == None):
             contract = 'mydexchain'
-        return self.send(sender, password, self.mother, amount, contract,self.description)
+        return self.send(sender, password, self.mother, amount, contract)
 
     def sendForInsufficient(self, wallet, amount):
-        send = math.ceil(self.fee(amount))
-        return self.send(self.mother,self.mpass,wallet,send,'mydexchain',self.description)
+        feeamount = math.ceil(self.fee(amount))
+        return self.send(self.mother, self.password, wallet, feeamount, 'mydexchain')
 
     def dexLog(self, strMessage):
         t = datetime.now()
@@ -88,38 +87,49 @@ class myDexchain:
         LogFile = open(fileName,'a')
         LogFile.write(strMessage+'\n')
         LogFile.close()
+        return 0
 
-    def fee(order):
-        if order > 0 and order <= 1000:
-            fee = order * 0.003
+    def fee(self, order):
+        if order >= 0 and order <= 1000:
+            return order * 0.003
         elif order > 1000 and order < 10000:
             order = order - 1000
-            fee = (order * 0.0003) + 3
+            return (order * 0.0003) + 3
         elif order > 10000 and order < 100000:
             order = order - 10000
-            fee = (order * 0.00003) + 5.70
+            return (order * 0.00003) + 5.70
         elif order > 100000 and order < 1000000:
             order = order - 100000
-            fee = (order * 0.000003) + 8.40
+            return (order * 0.000003) + 8.40
         elif order > 1000000 and order < 10000000:
             order = order - 1000000
-            fee = (order * 0.0000003) + 11.10
+            return (order * 0.0000003) + 11.10
         elif order > 10000000 and order < 100000000:
             order = order - 10000000
-            fee = (order * 0.00000003) + 13.80
+            return (order * 0.00000003) + 13.80
         elif order > 100000000 and order < 1000000000:
             order = order - 100000000
-            fee = (order * 0.000000003) + 16.50
+            return (order * 0.000000003) + 16.50
         elif order > 1000000000 and order < 10000000000:
             order = order - 1000000000
-            fee = (order * 0.0000000003) + 19.20
+            return (order * 0.0000000003) + 19.20
         elif order > 10000000000 and order < 100000000000:
             order = order - 10000000000
-            fee = (order * 0.00000000003) + 21.09
+            return (order * 0.00000000003) + 21.09
         elif order > 100000000000 and order < 1000000000000:
             order = order - 100000000000
-            fee = (order * 0.000000000003) + 24.60
-        return fee
+            return (order * 0.000000000003) + 24.60
 
     def setDescription(self, strDesc):
         self.description = strDesc
+
+    def getMotherDexBalance(self):
+        return self.getBalance(self.mother)
+
+    def getMotherContractBalance(self, contract):
+        return self.getTokenBalance(self.mother,contract)
+
+    def sendFromMother(self, wallet, amount, contract):
+        if(contract == None):
+            contract = 'mydexchain'
+        return self.send(self.mother, self.password, wallet, amount, contract)

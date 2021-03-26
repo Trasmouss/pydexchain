@@ -5,7 +5,7 @@ python class for mydexchain
 from pydexchain.pydexchain import myDexchain
 
 ### host :
-dexchain nope ip.
+dexchain node ip.
 ### port :
 default - 2020
 ### mother :
