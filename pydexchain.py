@@ -49,8 +49,12 @@ class myDexchain:
             return 0
 
     def send(self, sender, password, receiver, amount, contract):
+        if(contract == None):
+            inout = 'OUT'
+        else:
+            inout = 'IN'
         try:
-            url = "http://{}:{}/sendTransaction/{}&{}&{}&{}&OUT&{}&Webitox".format(self.host, self.port, sender, password, receiver, amount, contract, self.description)
+            url = "http://{}:{}/sendTransaction/{}&{}&{}&{}&{}&{}&Webitox".format(self.host, self.port, sender, password, receiver, amount, inout, contract, self.description)
             req = requests.post(url = url, data = '')
             data = req.json()
             print(data)
@@ -91,31 +95,31 @@ class myDexchain:
     def fee(self, order):
         if order >= 0 and order <= 1000:
             return order * 0.003
-        elif order > 1000 and order < 10000:
+        elif order >= 1000 and order <= 10000:
             order = order - 1000
             return (order * 0.0003) + 3
-        elif order > 10000 and order < 100000:
+        elif order >= 10000 and order <= 100000:
             order = order - 10000
             return (order * 0.00003) + 5.70
-        elif order > 100000 and order < 1000000:
+        elif order >= 100000 and order <= 1000000:
             order = order - 100000
             return (order * 0.000003) + 8.40
-        elif order > 1000000 and order < 10000000:
+        elif order >= 1000000 and order <= 10000000:
             order = order - 1000000
             return (order * 0.0000003) + 11.10
-        elif order > 10000000 and order < 100000000:
+        elif order >= 10000000 and order <= 100000000:
             order = order - 10000000
             return (order * 0.00000003) + 13.80
-        elif order > 100000000 and order < 1000000000:
+        elif order >= 100000000 and order <= 1000000000:
             order = order - 100000000
             return (order * 0.000000003) + 16.50
-        elif order > 1000000000 and order < 10000000000:
+        elif order >= 1000000000 and order <= 10000000000:
             order = order - 1000000000
             return (order * 0.0000000003) + 19.20
-        elif order > 10000000000 and order < 100000000000:
+        elif order >= 10000000000 and order <= 100000000000:
             order = order - 10000000000
             return (order * 0.00000000003) + 21.09
-        elif order > 100000000000 and order < 1000000000000:
+        elif order >= 100000000000 and order <= 1000000000000:
             order = order - 100000000000
             return (order * 0.000000000003) + 24.60
 
